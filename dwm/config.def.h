@@ -1,5 +1,5 @@
 /* See LICENSE file for copyright and license details. */
-
+#include <X11/XF86keysym.h>
 /* appearance */
 static const unsigned int borderpx  =0 ;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -60,6 +60,8 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *upbrightness[]   = { "xbacklight", "-inc", "10", NULL };
+static const char *downbrightness[] = { "xbacklight", "-dec", "10", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -96,6 +98,14 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ 0,       	XF86XK_MonBrightnessUp,    spawn,          {.v = upbrightness } },
+	{ 0,            XF86XK_MonBrightnessDown,  spawn,          {.v = downbrightness } },
+	// Increase volume
+		{ MODKEY,                        XF86XK_AudioRaiseVolume,      spawn,          SHCMD("amixer set Master 5%+ unmute") },
+	// Decrease volume
+		{ MODKEY,                        XF86XK_AudioLowerVolume,      spawn,          SHCMD("amixer set Master 5%- unmute") },
+	// Mute/Unmute toggle
+		{ MODKEY,                        XF86XK_AudioMute,       spawn,          SHCMD("amixer set Master toggle") },
 };
 
 /* button definitions */
