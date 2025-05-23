@@ -1,1 +1,3 @@
-this is my personal dwm configurations that i will make . you can ofcourse change the way you prefer and if i like it , i might modify my own . who knows ?
+This is my official Desktop setup in DWM. The setup is kept minimal without lots of shenanigans and is intended purely for development purpose. There are lots of dev-in-mind shortcuts which could be helpful.
+
+![Desktop](desktop.png)
