@@ -100,7 +100,7 @@ cleanup(void)
 {
 	size_t i;
 
-	XUngrabKey(dpy, AnyKey, AnyModifier, root);
+	XUngrabKeyboard(dpy, CurrentTime);
 	for (i = 0; i < SchemeLast; i++)
 		free(scheme[i]);
 	for (i = 0; items && items[i].text; ++i)
@@ -557,10 +557,6 @@ readstdin(void)
 	char *line = NULL;
 	size_t i, itemsiz = 0, linesiz = 0;
 	ssize_t len;
-	if (passwd){
-	inputw = lines = 0;
-	return;
-	}
 
 	/* read each line from stdin and add it to the item list */
 	for (i = 0; (len = getline(&line, &linesiz, stdin)) != -1; i++) {
@@ -724,9 +720,8 @@ setup(void)
 static void
 usage(void)
 {
-	fputs("usage: dmenu [-bfivP] [-l lines] [-p prompt] [-fn font] [-m monitor]\n"
-	    "             [-nb color] [-nf color] [-sb color] [-sf color] [-w windowid\n]",stderr);
-	exit(1);
+	die("usage: dmenu [-bfiv] [-l lines] [-p prompt] [-fn font] [-m monitor]\n"
+	    "             [-nb color] [-nf color] [-sb color] [-sf color] [-w windowid]");
 }
 
 int
