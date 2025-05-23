@@ -65,7 +65,7 @@ static const char *downbrightness[] = { "xbacklight", "-dec", "10", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          SHCMD("dmenu -P") },
+	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -83,6 +83,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglealwaysontop, {0} },
+	{0,				XK_Print,  spawn,		SHCMD("flameshot gui")},
 	{ 0,                    XK_1,      view,           {.ui = 1 } },
 	{ 0,                    XK_2,      view,           {.ui = 2 } },
 	{ 0,                    XK_3,      view,           {.ui = 4 } },
