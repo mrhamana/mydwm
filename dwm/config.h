@@ -83,30 +83,21 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglealwaysontop, {0} },
-	{ 0,                    XK_1,      view,           {.ui = 0 } },
-	{ 0,                    XK_2,      view,           {.ui = 1 } },
-	{ 0,                    XK_3,      view,           {.ui = 2 } },
-	{ 0,                    XK_4,      view,           {.ui = 3 } },
-	{ 0,                    XK_5,      view,           {.ui = 4 } },
-	{ 0,                    XK_6,      view,           {.ui = 5 } },
-	{ 0,                    XK_7,      view,           {.ui = 6 } },
-	{ 0,                    XK_8,      view,           {.ui = 7 } },
-	{ 0,                    XK_9,      view,           {.ui = 8 } },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+	{ 0,                    XK_1,      view,           {.ui = 1 } },
+	{ 0,                    XK_2,      view,           {.ui = 2 } },
+	{ 0,                    XK_3,      view,           {.ui = 4 } },
+	{ 0,                    XK_4,      view,           {.ui = 8 } },
+	{ 0,                    XK_5,      view,           {.ui = 16 } },
+	{ 0,                    XK_6,      view,           {.ui = 32 } },
+	{ 0,                    XK_7,      view,           {.ui = 64 } },
+	{ 0,                    XK_8,      view,           {.ui = 128 } },
+	{ 0,                    XK_9,      view,           {.ui = 256 } },
+	{ 0,                       XK_0,      view,           {.ui = ~0 } },
+	{ MODKEY,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ 0,       	XF86XK_MonBrightnessUp,    spawn,          {.v = upbrightness } },
 	{ 0,            XF86XK_MonBrightnessDown,  spawn,          {.v = downbrightness } },
