@@ -22,11 +22,21 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 #ZSH syntax highlighting
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-#My prompt 
-PROMPT='%F{green}%n%f%F{blue}@%f%F{pink}%m%f : %F{magenta}%~%f %F{red}>>%f '
-
-
 #ls alias
 alias ls="ls --color"
 
+
+# Enable for git
+autoload -Uz vcs_info
+precmd() { vcs_info }
+
+zstyle ':vcs_info:git:*' formats '%F{green}[%b]%f'
+zstyle ':vcs_info:*' enable git
+
+#my prompt
+PROMPT="%B%F{green}%m%f%b%F{pink}%f : %F{magenta}%~%f %F{red}>>%f ${vcs_info_msg_0_}"
+
+
+#Some Alias
+alias cls=clear
 
