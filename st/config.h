@@ -95,6 +95,8 @@ unsigned int tabspaces = 8;
 
 /* bg opacity */
 float alpha = 0.8;
+float grad_alpha = 0.54; //alpha value that'll change
+float stat_alpha = 0.46; //constant alpha value that'll get added to grad_alpha
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
