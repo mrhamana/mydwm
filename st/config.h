@@ -96,9 +96,7 @@ unsigned int tabspaces = 8;
 /* Dynamic font size change */
 
 /* bg opacity */
-float alpha = 0.8;
-float grad_alpha = 0.54; //alpha value that'll change
-float stat_alpha = 0.46; //constant alpha value that'll get added to grad_alpha
+float alpha = 0.6;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
