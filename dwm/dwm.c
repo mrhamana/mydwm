@@ -153,6 +153,7 @@ static void checkotherwm(void);
 static void cleanup(void);
 static void cleanupmon(Monitor *mon);
 static void clientmessage(XEvent *e);
+static void colormodehandler(int sig);
 static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
@@ -198,6 +199,7 @@ static void scan(void);
 static int sendevent(Client *c, Atom proto);
 static void sendmon(Client *c, Monitor *m);
 static void setclientstate(Client *c, long state);
+static void setcolormode(void);
 static void setfocus(Client *c);
 static void setfullscreen(Client *c, int fullscreen);
 static void setlayout(const Arg *arg);
@@ -206,6 +208,7 @@ static void setup(void);
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
 static void spawn(const Arg *arg);
+static void spawndmenu(const Arg *arg);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
 static void tile(Monitor *m);
@@ -263,11 +266,13 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 static Atom wmatom[WMLast], netatom[NetLast];
 static int running = 1;
 static Cur *cursor[CurLast];
-static Clr **scheme;
+static Clr **scheme, **schemedark, **schemelight;
 static Display *dpy;
 static Drw *drw;
 static Monitor *mons, *selmon;
 static Window root, wmcheckwin;
+static const char **dmenucmd;
+static int colormodechanged;
 
 /* configuration, allows nested code to access above variables */
 #include "config.h"
@@ -487,9 +492,12 @@ cleanup(void)
 		cleanupmon(mons);
 	for (i = 0; i < CurLast; i++)
 		drw_cur_free(drw, cursor[i]);
-	for (i = 0; i < LENGTH(colors); i++)
-		free(scheme[i]);
-	free(scheme);
+	for (i = 0; i < LENGTH(colorsdark); i++) {
+		free(schemedark[i]);
+		free(schemelight[i]);
+	}
+	free(schemedark);
+	free(schemelight);
 	XDestroyWindow(dpy, wmcheckwin);
 	drw_free(drw);
 	XSync(dpy, False);
@@ -530,6 +538,12 @@ clientmessage(XEvent *e)
 		if (c != selmon->sel && !c->isurgent)
 			seturgent(c, 1);
 	}
+}
+
+void
+colormodehandler(int sig)
+{
+  colormodechanged = 1;
 }
 
 void
@@ -1231,6 +1245,10 @@ propertynotify(XEvent *e)
 	Window trans;
 	XPropertyEvent *ev = &e->xproperty;
 
+  if (colormodechanged) {
+    setcolormode();
+    colormodechanged = 0;
+  }
 	if ((ev->window == root) && (ev->atom == XA_WM_NAME))
 		updatestatus();
 	else if (ev->state == PropertyDelete)
@@ -1459,6 +1477,32 @@ setclientstate(Client *c, long state)
 		PropModeReplace, (unsigned char *)data, 2);
 }
 
+void
+setcolormode(void)
+{
+	static const char *file = ".lightmode";
+	static char *path = NULL;
+	const char *home;
+	size_t size;
+
+	if (!path && (home = getenv("HOME"))) {
+		size = strlen(home) + 1 + strlen(file) + 1;
+		path = malloc(size);
+		if (!path)
+			die("dwm: malloc failed");
+
+		snprintf(path, size, "%s/%s", home, file);
+	}
+
+	if (access(path, F_OK) == 0) {
+		scheme = schemelight;
+		dmenucmd = dmenulight;
+	} else {
+		scheme = schemedark;
+		dmenucmd = dmenudark;
+	}
+}
+
 int
 sendevent(Client *c, Atom proto)
 {
@@ -1567,6 +1611,11 @@ setup(void)
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGCHLD, &sa, NULL);
 
+	/* set color mode on SIGHUP */
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = colormodehandler;
+	sigaction(SIGHUP, &sa, NULL);
+
 	/* clean up any zombies (inherited from .xinitrc etc) immediately */
 	while (waitpid(-1, NULL, WNOHANG) > 0);
 
@@ -1601,9 +1650,13 @@ setup(void)
 	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
 	cursor[CurMove] = drw_cur_create(drw, XC_fleur);
 	/* init appearance */
-	scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
-	for (i = 0; i < LENGTH(colors); i++)
-		scheme[i] = drw_scm_create(drw, colors[i], 3);
+	schemedark = ecalloc(LENGTH(colorsdark), sizeof(Clr *));
+	schemelight = ecalloc(LENGTH(colorslight), sizeof(Clr *));
+	for (i = 0; i < LENGTH(colorsdark); i++) {
+		schemedark[i] = drw_scm_create(drw, colorsdark[i], 3);
+		schemelight[i] = drw_scm_create(drw, colorslight[i], 3);
+	}
+  setcolormode();
 	/* init bars */
 	updatebars();
 	updatestatus();
@@ -1666,8 +1719,6 @@ spawn(const Arg *arg)
 {
 	struct sigaction sa;
 
-	if (arg->v == dmenucmd)
-		dmenumon[0] = '0' + selmon->num;
 	if (fork() == 0) {
 		if (dpy)
 			close(ConnectionNumber(dpy));
@@ -1681,6 +1732,13 @@ spawn(const Arg *arg)
 		execvp(((char **)arg->v)[0], (char **)arg->v);
 		die("dwm: execvp '%s' failed:", ((char **)arg->v)[0]);
 	}
+}
+
+void
+spawndmenu(const Arg *arg)
+{
+	dmenumon[0] = '0' + selmon->num;
+	spawn(&(const Arg){.v = dmenucmd});
 }
 
 void
