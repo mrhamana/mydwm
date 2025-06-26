@@ -18,15 +18,14 @@ static const char *colorsdark[][3] = {
     [SchemeSel] = {col_gray4, col_cyan, col_cyan},
 };
 
-static const char *colorslight[][3] =
-    {
-        [SchemeNorm] = {col_gray1, col_gray3, col_gray2},
-        [SchemeSel] = {col_cyan, col_gray4, col_cyan},
+static const char *colorslight[][3] = {
+    [SchemeNorm] = {col_gray1, col_gray3, col_gray2},
+    [SchemeSel] = {col_cyan, col_gray4, col_cyan},
 
 };
 
-    /* tagging */
-    static const char *tags[] = {"\uf120", "\uf372", "\ueb26", "\uf02d", "\ueb51"};
+/* tagging */
+static const char *tags[] = {"\uf120", "\uf372", "\ueb26", "\uf02d", "\ueb51"};
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -103,26 +102,26 @@ static const Key keys[] = {
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
     {MODKEY | ShiftMask, XK_space, togglealwaysontop, {0}},
     {0, XK_Print, spawn, SHCMD("flameshot gui")},
-    {0, XK_1, view, {.ui = 1}},
-    {MODKEY, XK_1, tag, {.ui = 1 << 0}},
-    {0, XK_2, view, {.ui = 2}},
-    {MODKEY, XK_2, tag, {.ui = 2 << 0}},
-    {0, XK_3, view, {.ui = 4}},
-    {MODKEY, XK_3, tag, {.ui = 4 << 0}},
-    {0, XK_4, view, {.ui = 8}},
-    {MODKEY, XK_4, tag, {.ui = 8 << 0}},
-    {0, XK_5, view, {.ui = 16}},
-    {MODKEY, XK_5, tag, {.ui = 16 << 0}},
-    {0, XK_6, view, {.ui = 32}},
-    {MODKEY, XK_6, tag, {.ui = 32 << 0}},
-    {0, XK_7, view, {.ui = 64}},
-    {MODKEY, XK_7, tag, {.ui = 64 << 0}},
-    {0, XK_8, view, {.ui = 128}},
-    {MODKEY, XK_8, tag, {.ui = 128 << 0}},
-    {0, XK_9, view, {.ui = 256}},
-    {MODKEY, XK_9, tag, {.ui = 256 << 0}},
-    {0, XK_0, view, {.ui = ~0}},
-    {MODKEY, XK_0, tag, {.ui = ~0}},
+    {0, XK_F1, view, {.ui = 1}},
+    {MODKEY, XK_F1, tag, {.ui = 1 << 0}},
+    {0, XK_F2, view, {.ui = 2}},
+    {MODKEY, XK_F2, tag, {.ui = 2 << 0}},
+    {0, XK_F3, view, {.ui = 4}},
+    {MODKEY, XK_F3, tag, {.ui = 4 << 0}},
+    {0, XK_F4, view, {.ui = 8}},
+    {MODKEY, XK_F4, tag, {.ui = 8 << 0}},
+    {0, XK_F5, view, {.ui = 16}},
+    {MODKEY, XK_F5, tag, {.ui = 16 << 0}},
+    {0, XK_F6, view, {.ui = 32}},
+    {MODKEY, XK_F6, tag, {.ui = 32 << 0}},
+    {0, XK_F7, view, {.ui = 64}},
+    {MODKEY, XK_F7, tag, {.ui = 64 << 0}},
+    {0, XK_F8, view, {.ui = 128}},
+    {MODKEY, XK_F8, tag, {.ui = 128 << 0}},
+    {0, XK_F9, view, {.ui = 256}},
+    {MODKEY, XK_F9, tag, {.ui = 256 << 0}},
+    {0, XK_F10, view, {.ui = ~0}},
+    {MODKEY, XK_F10, tag, {.ui = ~0}},
     {MODKEY, XK_comma, focusmon, {.i = -1}},
     {MODKEY, XK_period, focusmon, {.i = +1}},
     {MODKEY | ShiftMask, XK_comma, tagmon, {.i = -1}},
